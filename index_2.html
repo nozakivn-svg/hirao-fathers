@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>平尾小父親の会</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #2a7ab8;
+    --orange: #3aace0;
+    --orange-light: #6fc8ee;
+    --cream: #f0f8ff;
+    --warm-gray: #e0f0fa;
+    --text: #1a3a52;
+    --text-muted: #6a90aa;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* ナビ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--navy);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .nav-logo {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--white);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-logo span { color: var(--orange); }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--orange-light); }
+
+  /* ハンバーガー */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+
+  /* ヒーロー */
+  .hero {
+    margin-top: 60px;
+    background: linear-gradient(160deg, #7ecef5 0%, #42aee8 50%, #1e92d0 100%);
+    padding: 5rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: #ffffff;
+    opacity: 0.12;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -40px;
+    width: 250px; height: 250px;
+    border-radius: 50%;
+    background: #ffffff;
+    opacity: 0.08;
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--orange-light);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  .hero h1 {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  .hero h1 span { color: var(--orange); }
+
+  .motto {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.5);
+    color: var(--white);
+    font-size: 0.9rem;
+    padding: 0.6rem 1.5rem;
+    border-radius: 100px;
+    margin-top: 1.5rem;
+    letter-spacing: 0.05em;
+    position: relative;
+  }
+
+  .hero-desc {
+    color: rgba(255,255,255,0.7);
+    max-width: 480px;
+    margin: 1.5rem auto 0;
+    font-size: 0.95rem;
+  }
+
+  .hero-cta {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    border-radius: 100px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+
+  .btn-primary {
+    background: var(--orange);
+    color: var(--white);
+  }
+
+  .btn-primary:hover {
+    background: var(--orange-light);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    border: 1.5px solid rgba(255,255,255,0.4);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--white);
+    transform: translateY(-2px);
+  }
+
+  /* セクション共通 */
+  section { padding: 4rem 2rem; }
+
+  .section-inner { max-width: 900px; margin: 0 auto; }
+
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    color: var(--orange);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 900;
+    font-size: clamp(1.4rem, 4vw, 2rem);
+    color: var(--navy);
+    margin-bottom: 2rem;
+    line-height: 1.3;
+  }
+
+  /* お知らせ */
+  #news { background: var(--white); }
+
+  .news-list { display: flex; flex-direction: column; gap: 0; }
+
+  .news-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--warm-gray);
+  }
+
+  .news-item:first-child { border-top: 1px solid var(--warm-gray); }
+
+  .news-date {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    min-width: 80px;
+    padding-top: 2px;
+  }
+
+  .news-tag {
+    font-size: 0.7rem;
+    padding: 2px 10px;
+    border-radius: 100px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .tag-event { background: #fff0e8; color: var(--orange); }
+  .tag-info { background: #e8f0ff; color: #3a6fd8; }
+
+  .news-text { font-size: 0.9rem; color: var(--text); }
+
+  /* 活動 */
+  #activities { background: var(--cream); }
+
+  .activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .activity-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .activity-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(26,46,74,0.1);
+  }
+
+  .activity-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .activity-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.4rem;
+    color: var(--navy);
+  }
+
+  .activity-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* スケジュール */
+  #schedule { background: #2a9ad4; }
+
+  #schedule .section-title { color: var(--white); }
+  #schedule .section-label { color: #c8ecfa; }
+
+  .schedule-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .schedule-month {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+
+  .month-label {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    color: var(--orange);
+    margin-bottom: 0.75rem;
+  }
+
+  .schedule-item {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.75);
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    line-height: 1.5;
+  }
+
+  .schedule-item:last-child { border-bottom: none; }
+
+  .schedule-item .date { color: var(--orange-light); font-weight: 500; }
+
+  /* 会員募集 */
+  #join { background: var(--cream); }
+
+  .join-box {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.06);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .join-box .big-text {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    font-weight: 900;
+    color: var(--navy);
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+
+  .join-box p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    line-height: 1.8;
+  }
+
+  .join-points {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: left;
+    margin-bottom: 2rem;
+  }
+
+  .join-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.88rem;
+  }
+
+  .point-icon {
+    width: 24px;
+    height: 24px;
+    background: var(--orange);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-size: 0.7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* お問い合わせ */
+  #contact { background: var(--white); }
+
+  .contact-box {
+    background: var(--warm-gray);
+    border-radius: 16px;
+    padding: 2.5rem;
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .contact-box p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+
+  /* フッター */
+  footer {
+    background: #1a7ab0;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.8rem;
+  }
+
+  /* スクロールアニメーション */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* レスポンシブ */
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .nav-links.open {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 60px; left: 0; right: 0;
+      background: var(--navy);
+      padding: 1rem 2rem 1.5rem;
+      gap: 1rem;
+    }
+    nav { position: relative; flex-wrap: wrap; height: auto; padding: 1rem 2rem; }
+    .hero { margin-top: 0; }
+    .news-item { flex-direction: column; gap: 0.5rem; }
+    .join-box { padding: 2rem 1.5rem; }
+    .contact-box { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ナビ -->
+<nav>
+  <div class="nav-logo"><img src="data:image/png;base64,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" style="height:40px;width:auto;vertical-align:middle;margin-right:8px;" alt="ブルドッグアイコン">平尾小<span>父親の会</span></div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#news">お知らせ</a></li>
+    <li><a href="#activities">活動</a></li>
+    <li><a href="#schedule">スケジュール</a></li>
+    <li><a href="#join">会員募集</a></li>
+    <li><a href="#contact">お問い合わせ</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ヒーロー -->
+<section class="hero">
+  <div class="hero-eyebrow">福岡市立平尾小学校</div>
+  <h1>子どもたちと一緒に、<br><span>楽しもう。</span></h1>
+  <div class="motto">『できる人が、できることを、できる時にやる』</div>
+  <p class="hero-desc">平尾小父親の会は、平尾小学校の子どもたちに楽しい体験と思い出を作るためのボランティア活動をしています。</p>
+  <div class="hero-cta">
+    <a href="#join" class="btn btn-primary">参加してみる</a>
+    <a href="#activities" class="btn btn-outline">活動を見る</a>
+  </div>
+</section>
+
+<!-- お知らせ -->
+<section id="news">
+  <div class="section-inner">
+    <div class="section-label">NEWS</div>
+    <h2 class="section-title">お知らせ</h2>
+    <div class="news-list">
+      <div class="news-item fade-in">
+        <span class="news-date">2025.05.23</span>
+        <span class="news-tag tag-event">イベント</span>
+        <span class="news-text">歓迎会を開催しました。ご参加いただいた皆さんありがとうございました！</span>
+      </div>
+      <div class="news-item fade-in">
+        <span class="news-date">2025.05.01</span>
+        <span class="news-tag tag-info">お知らせ</span>
+        <span class="news-text">令和7年度の活動スケジュールを公開しました。</span>
+      </div>
+      <div class="news-item fade-in">
+        <span class="news-date">2024.12.06</span>
+        <span class="news-tag tag-event">イベント</span>
+        <span class="news-text">家族感謝祭を開催しました。たくさんのご参加ありがとうございました。</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 活動 -->
+<section id="activities">
+  <div class="section-inner">
+    <div class="section-label">ACTIVITIES</div>
+    <h2 class="section-title">主な活動</h2>
+    <div class="activities-grid">
+      <div class="activity-card fade-in">
+        <div class="activity-icon">⛺</div>
+        <div class="activity-name">校内キャンプ</div>
+        <div class="activity-desc">毎年9月。学校の校庭でテント泊。子どもたちに大人気のビッグイベント。</div>
+      </div>
+      <div class="activity-card fade-in">
+        <div class="activity-icon">🏊</div>
+        <div class="activity-name">着衣泳</div>
+        <div class="activity-desc">7月開催。水難事故への備えとして、服を着たまま泳ぐ体験をサポート。</div>
+      </div>
+      <div class="activity-card fade-in">
+        <div class="activity-icon">🎪</div>
+        <div class="activity-name">ふれあいフェア出店</div>
+        <div class="activity-desc">11月の地域イベントに出店。地域のみなさんとの交流の場。</div>
+      </div>
+      <div class="activity-card fade-in">
+        <div class="activity-icon">🎉</div>
+        <div class="activity-name">家族感謝祭</div>
+        <div class="activity-desc">12月開催。一年の締めくくりに家族みんなで楽しむイベント。</div>
+      </div>
+      <div class="activity-card fade-in">
+        <div class="activity-icon">🚦</div>
+        <div class="activity-name">学校サポート</div>
+        <div class="activity-desc">運動会警備や修学旅行・自然教室の交通整理など、学校行事を裏方で支えます。</div>
+      </div>
+      <div class="activity-card fade-in">
+        <div class="activity-icon">🍺</div>
+        <div class="activity-name">パパの日定例会</div>
+        <div class="activity-desc">毎月8日前後に開催。活動の打ち合わせ＋みんなでわいわい。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- スケジュール -->
+<section id="schedule">
+  <div class="section-inner">
+    <div class="section-label">SCHEDULE</div>
+    <h2 class="section-title">令和7年度 年間スケジュール</h2>
+    <div class="schedule-grid">
+      <div class="schedule-month fade-in">
+        <div class="month-label">5月</div>
+        <div class="schedule-item"><span class="date">5/23</span> 歓迎会</div>
+        <div class="schedule-item"><span class="date">5/30</span> 運動会警備</div>
+      </div>
+      <div class="schedule-month fade-in">
+        <div class="month-label">6月</div>
+        <div class="schedule-item"><span class="date">6/8</span> 第1回定例会</div>
+        <div class="schedule-item"><span class="date">6/28</span> 子ども110番ウォークラリー</div>
+      </div>
+      <div class="schedule-month fade-in">
+        <div class="month-label">7月</div>
+        <div class="schedule-item"><span class="date">7/2</span> 自然教室交通整理</div>
+        <div class="schedule-item"><span class="date">7/8</span> 第2回定例会</div>
+        <div class="schedule-item"><span class="date">7/25</span> 着衣泳</div>
+      </div>
+      <div class="schedule-month fade-in">
+        <div class="month-label">8月</div>
+        <div class="schedule-item"><span class="date">8/8</span> 第3回定例会SP</div>
+      </div>
+      <div class="schedule-month fade-in">
+        <div class="month-label">9月</div>
+        <div class="schedule-item"><span class="date">9/5・6</span> 校内キャンプ</div>
+        <div class="schedule-item"><span class="date">9/8</span> 第4回定例会</div>
+      </div>
+      <div class="schedule-month fade-in">
+        <div class="month-label">10月</div>
+        <div class="schedule-item"><span class="date">10/2</span> 修学旅行交通整理</div>
+        <div class="schedule-item"><span class="date">10/8</span> 第5回定例会</div>
+      </div>
+      <div class="schedule-month fade-in">
+        <div class="month-label">11月</div>
+        <div class="schedule-item"><span class="date">11/8</span> ふれあいフェア出店</div>
+        <div class="schedule-item"><span class="date">11/14</span> 音楽フェスティバル警備</div>
+      </div>
+      <div class="schedule-month fade-in">
+        <div class="month-label">12月</div>
+        <div class="schedule-item"><span class="date">12/6</span> 家族感謝祭</div>
+        <div class="schedule-item"><span class="date">12/8</span> 第6回定例会</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 会員募集 -->
+<section id="join">
+  <div class="section-inner">
+    <div class="section-label">JOIN US</div>
+    <h2 class="section-title">会員募集</h2>
+    <div class="join-box fade-in">
+      <div class="big-text">気軽に、来られる時に、<br>一緒に楽しみましょう。</div>
+      <p>平尾小父親の会は会費無料、強制参加なし。<br>出入り自由で、来られる時に来てもらえるだけで十分です。</p>
+      <div class="join-points">
+        <div class="join-point">
+          <div class="point-icon">✓</div>
+          <span>会費無料・強制参加なし</span>
+        </div>
+        <div class="join-point">
+          <div class="point-icon">✓</div>
+          <span>お父さんだけでなく、保護者の方ならどなたでも</span>
+        </div>
+        <div class="join-point">
+          <div class="point-icon">✓</div>
+          <span>途中からでも、途中でやめてもOK</span>
+        </div>
+        <div class="join-point">
+          <div class="point-icon">✓</div>
+          <span>まずはお試し参加から気軽にどうぞ</span>
+        </div>
+      </div>
+      <a href="#contact" class="btn btn-primary">お問い合わせ・参加申込</a>
+    </div>
+  </div>
+</section>
+
+<!-- お問い合わせ -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label">CONTACT</div>
+    <h2 class="section-title">お問い合わせ</h2>
+    <div class="contact-box fade-in">
+      <p>参加のご相談や活動についてのご質問は、お気軽にどうぞ。</p>
+      <a href="#" class="btn btn-primary">お問い合わせフォームへ</a>
+    </div>
+  </div>
+</section>
+
+<!-- フッター -->
+<footer>
+  <p>© 2025 平尾小父親の会 — 福岡市立平尾小学校</p>
+</footer>
+
+<script>
+  // ハンバーガーメニュー
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => navLinks.classList.remove('open'));
+  });
+
+  // スクロールアニメーション
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
